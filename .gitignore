@@ -1,0 +1,11 @@
+.vs/
+bin/FreeImage.dll
+bin/Pong_debug.exe
+bin/Pong_debug.exp
+bin/Pong_debug.ilk
+bin/Pong_debug.lib
+bin/Pong_debug.pdb
+bin/data/sounds/
+bin/fmodex64.dll
+bin/fmodexL64.dll
+obj/
