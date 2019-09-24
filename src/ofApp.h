@@ -2,6 +2,23 @@
 
 #include "ofMain.h"
 
+class StarShip {
+
+	public:
+
+		// Properties
+		int xPosition;
+		int yPosition;
+		int width;
+		int height;
+		int speed;
+		int shootKey;	// Key that will be used to allow this player to shoot
+		ofRectangle hitbox;
+
+		void draw();
+
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -21,4 +38,12 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		// Player 1
+		StarShip player1;
+
+		// Player 2 (if needed)
+		StarShip player2;
+
+		// Keeps track of which keys are down
+		bool keyIsDown[255];
 };
