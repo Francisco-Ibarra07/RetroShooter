@@ -1,10 +1,5 @@
 #include "ofApp.h"
 
-void StarShip::draw() {
-	ofDrawRectangle(xPosition, yPosition, width, height);
-	hitbox = ofRectangle(xPosition, yPosition, width, height);
-}
-
 
 //--------------------------------------------------------------
 void ofApp::setup(){

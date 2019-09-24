@@ -1,23 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-
-class StarShip {
-
-	public:
-
-		// Properties
-		int xPosition;
-		int yPosition;
-		int width;
-		int height;
-		int speed;
-		int shootKey;	// Key that will be used to allow this player to shoot
-		ofRectangle hitbox;
-
-		void draw();
-
-};
+#include "Emitter.h"
+#include "StarShip.h"
 
 class ofApp : public ofBaseApp{
 
@@ -38,6 +23,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+
+		vector<Emitter *> emitters;
+		int numberOfEmitters;
+
 		// Player 1
 		StarShip player1;
 
