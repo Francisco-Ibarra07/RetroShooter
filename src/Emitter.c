@@ -83,8 +83,9 @@ void Sprite::draw() {
 	else {
 		// in case no image is supplied, draw something.
 		// 
-		ofSetColor(255, 0, 0);
-		ofDrawRectangle(-width / 2.0 + trans.x, -height / 2.0 + trans.y, width, height);
+		//ofSetColor(255, 0, 0);
+		//ofDrawRectangle(-width / 2.0 + trans.x, -height / 2.0 + trans.y, width, height);
+		ofDrawCircle(-width / 2.0 + trans.x, -height / 2.0 + trans.y, 20);
 	}
 }
 
