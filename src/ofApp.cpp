@@ -31,25 +31,27 @@ void ofApp::setup(){
 
 	// Setup gui
 	gui.setup();
-	gui.add(rate.setup("rate", 1, 1, 10));
+	gui.add(showAimAssist.setup("Aim", true));
+	gui.add(rate.setup("rate", 8, 1, 10));
 	gui.add(life.setup("life", 5, .1, 10));
-	gui.add(velocity.setup("velocity", ofVec3f(0, -700, 0), ofVec3f(-1000, -1000, -1000), ofVec3f(1000, 1000, 1000)));
-	showGUI = false;
+	gui.add(velocity.setup("velocity", ofVec3f(100, -700, 0), ofVec3f(-1000, -1000, -1000), ofVec3f(1000, 1000, 1000)));
+	showGUI = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	
 	// Cases for Player 1
 	// Move up
 	if (keyIsDown['w']) { 
 		player1.yPosition -= player1.speed;
 	}
 	// Move down
-	else if (keyIsDown['s']) { 
+	else if (keyIsDown['s']) {
 		player1.yPosition += player1.speed;
 	}
 	// Move right
-	if (keyIsDown['d']) { 
+	if (keyIsDown['d']) {
 		player1.xPosition += player1.speed;
 	}
 	// Move left
@@ -58,18 +60,19 @@ void ofApp::update(){
 	}
 
 	// Update Turret Emitter variables
-	// If player presses the shoot key, then new "bullet" sprites can be spawned
-	if (keyIsDown[player1.shootKey]) {
+	// If player presses the shoot key (Left mouse key), then new "bullet" sprites can be spawned
+	if (mouseButtonIsDown[LEFT_CLICK])
 		turretEmitter->startSpriteCreation();
-	}
-	else {
+	else
 		turretEmitter->stopSpriteCreation();
-	}
+
+	// Shooting direction is between the circle and the mouse location
+	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player1.xPosition, ofGetMouseY() - player1.yPosition, 0);
 
 	turretEmitter->setRate(rate);
 	turretEmitter->setLifespan(life * 1000);
 	turretEmitter->setPosition(ofVec3f(player1.xPosition, player1.yPosition, 0));
-	turretEmitter->setVelocity(ofVec3f(velocity->x, velocity->y, velocity->z));
+	turretEmitter->setVelocity(shootingDirection);
 	turretEmitter->update();
 }
 
@@ -80,6 +83,10 @@ void ofApp::draw(){
 
 	if (showGUI) {
 		gui.draw();
+	}
+
+	if (showAimAssist) {
+		ofDrawLine(player1.xPosition, player1.yPosition, ofGetMouseX(), ofGetMouseY());
 	}
 }
 
@@ -109,11 +116,14 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	cout << "Button: " << button << endl;
+	mouseButtonIsDown[button] = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
+	cout << "Released: " << button << endl;
+	mouseButtonIsDown[button] = false;
 
 }
 
