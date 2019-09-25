@@ -1,6 +1,5 @@
 #include "ofApp.h"
 
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
@@ -14,7 +13,7 @@ void ofApp::setup(){
 	ofSetBackgroundColor(ofColor::black);
 
 	// Load the bullet image. Exit if failure
-	if (bulletImage.load("images/space-invaders-ship-scaled.png")) {
+	if (bulletImage.load("images/bullet-test-image.png")) {
 		bulletImageLoaded = true;
 	}
 	else {
@@ -39,8 +38,8 @@ void ofApp::setup(){
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-	
+void ofApp::update() {
+
 	// Cases for Player 1
 	// Move up
 	if (keyIsDown['w']) { 
@@ -116,15 +115,12 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-	cout << "Button: " << button << endl;
 	mouseButtonIsDown[button] = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-	cout << "Released: " << button << endl;
 	mouseButtonIsDown[button] = false;
-
 }
 
 //--------------------------------------------------------------
