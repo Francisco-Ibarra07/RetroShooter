@@ -147,6 +147,7 @@ Emitter::Emitter(SpriteSystem *spriteSys) {
 	sys = spriteSys;
 	lifespan = 3000;    // milliseconds
 	started = false;
+	allowNewSpriteCreation = true;
 
 	lastSpawned = 0;
 	rate = 1;    // sprites/sec
@@ -184,18 +185,23 @@ void Emitter::draw() {
 void Emitter::update() {
 	if (!started) return;
 
-	float time = ofGetElapsedTimeMillis();
-	if ((time - lastSpawned) > (1000.0/rate)) {
-		// spawn a new sprite
-		Sprite sprite;
-		if (haveChildImage) sprite.setImage(childImage);
-		sprite.velocity = velocity;
-		sprite.lifespan = lifespan;
-		sprite.setPosition(trans);
-		sprite.birthtime = time;
-		sys->add(sprite);
-		lastSpawned = time;
+	// Only spawn new sprites if allowed by "allowNewSpriteCreation" flag
+	if (allowNewSpriteCreation) {
+
+		float time = ofGetElapsedTimeMillis();
+		if ((time - lastSpawned) > (1000.0/rate)) {
+			// spawn a new sprite
+			Sprite sprite;
+			if (haveChildImage) sprite.setImage(childImage);
+			sprite.velocity = velocity;
+			sprite.lifespan = lifespan;
+			sprite.setPosition(trans);
+			sprite.birthtime = time;
+			sys->add(sprite);
+			lastSpawned = time;
+		}
 	}
+
 	sys->update();
 }
 
@@ -210,6 +216,14 @@ void Emitter::stop() {
 	started = false;
 }
 
+// Start/Stop adding new sprites to the emitter
+void Emitter::startSpriteCreation() {
+	allowNewSpriteCreation = true;
+}
+
+void Emitter::stopSpriteCreation() {
+	allowNewSpriteCreation = false;
+}
 
 void Emitter::setLifespan(float life) {
 	lifespan = life;
