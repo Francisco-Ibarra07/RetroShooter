@@ -24,7 +24,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		// Emitter properties
-		vector<Emitter *> enemyEmitterList;
+		vector<Emitter*> enemyEmitterList;
 		int numberOfEnemyEmitterList;
 
 
@@ -41,9 +41,12 @@ class ofApp : public ofBaseApp{
 
 		// Keeps track of which keys are being held down
 		bool keyIsDown[255];
+		bool mouseButtonIsDown[3];
+		typedef enum { LEFT_CLICK, SCROLL_CLICK, RIGHT_CLICK } Mouse;
 
 		// ofxGui
 		bool showGUI;
+		ofxToggle showAimAssist;
 		ofxFloatSlider rate;
 		ofxFloatSlider life;
 		ofxVec3Slider velocity;
