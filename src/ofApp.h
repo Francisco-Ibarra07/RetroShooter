@@ -9,7 +9,7 @@ class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
-		void draw();
+		void draw(); 
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -23,9 +23,15 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		// Emitter properties
+		vector<Emitter *> enemyEmitterList;
+		int numberOfEnemyEmitterList;
 
-		vector<Emitter *> emitters;
-		int numberOfEmitters;
+
+		// Turret Emitter
+		Emitter* turretEmitter;
+		bool bulletImageLoaded;
+		ofImage bulletImage;
 
 		// Player 1
 		StarShip player1;
@@ -33,6 +39,14 @@ class ofApp : public ofBaseApp{
 		// Player 2 (if needed)
 		StarShip player2;
 
-		// Keeps track of which keys are down
+		// Keeps track of which keys are being held down
 		bool keyIsDown[255];
+
+		// ofxGui
+		bool showGUI;
+		ofxFloatSlider rate;
+		ofxFloatSlider life;
+		ofxVec3Slider velocity;
+		ofxLabel screenSize;
+		ofxPanel gui;
 };

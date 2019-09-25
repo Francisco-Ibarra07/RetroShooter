@@ -54,6 +54,8 @@ public:
 	void draw();
 	void start();
 	void stop();
+	void startSpriteCreation();
+	void stopSpriteCreation();
 	void setLifespan(float);
 	void setVelocity(ofVec3f);
 	void setChildImage(ofImage);
@@ -65,6 +67,7 @@ public:
 	ofVec3f velocity;
 	float lifespan;
 	bool started;
+	bool allowNewSpriteCreation;
 	float lastSpawned;
 	ofImage childImage;
 	ofImage image;
