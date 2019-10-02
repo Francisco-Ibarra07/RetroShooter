@@ -1,4 +1,6 @@
 .vs/
+RetroShooter.vcxproj
+RetroShooter.vcxproj.filters
 bin/FreeImage.dll
 bin/Pong_debug.exe
 bin/Pong_debug.exp
