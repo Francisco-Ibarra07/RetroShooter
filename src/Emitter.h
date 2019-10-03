@@ -59,6 +59,7 @@ public:
 	void setLifespan(float);
 	void setVelocity(ofVec3f);
 	void setChildImage(ofImage);
+	void setSpawnSound(ofSoundPlayer);
 	void setImage(ofImage);
 	void setRate(float);
 	void update();
@@ -75,4 +76,8 @@ public:
 	bool haveChildImage;
 	bool haveImage;
 	float width, height;
+
+	// Sound
+	ofSoundPlayer spawnSound;
+	bool haveSpawnSound;
 };

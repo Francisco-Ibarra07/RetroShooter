@@ -150,6 +150,7 @@ Emitter::Emitter(SpriteSystem *spriteSys) {
 	started = false;
 	allowNewSpriteCreation = true;
 
+	haveSpawnSound = false;
 	lastSpawned = 0;
 	rate = 1;    // sprites/sec
 	haveChildImage = false;
@@ -200,6 +201,8 @@ void Emitter::update() {
 			sprite.birthtime = time;
 			sys->add(sprite);
 			lastSpawned = time;
+
+			if (haveSpawnSound) spawnSound.play();
 		}
 	}
 
@@ -232,6 +235,11 @@ void Emitter::setLifespan(float life) {
 
 void Emitter::setVelocity(ofVec3f v) {
 	velocity = v;
+}
+
+void Emitter::setSpawnSound(ofSoundPlayer sound) {
+	spawnSound = sound;
+	haveSpawnSound = true;
 }
 
 void Emitter::setChildImage(ofImage img) {
