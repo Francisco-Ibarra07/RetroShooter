@@ -17,16 +17,19 @@ void ofApp::setup() {
 	float playerYPosition = ofGetHeight() - player.height * 4;
 	player.setup(playerXPosition, playerYPosition);
 
-
 	// Emitter Setup
 	// Load the bullet image. Exit if failure
 	if (bulletImage.load("images/bullet.png")) bulletImageLoaded = true;
+
+	// Sound Setup
+	shootSound.load("sounds/shoot.wav");
 
 	// Setup turret emitter
 	turretEmitter = new Emitter(new SpriteSystem());
 	turretEmitter->setPosition(ofVec3f(player.x, player.y, 0));
 	turretEmitter->drawable = false;                // make emitter itself invisible
 	turretEmitter->setChildImage(bulletImage);
+	turretEmitter->setSpawnSound(shootSound);
 	turretEmitter->start();
 
 	// Setup gui

@@ -39,11 +39,12 @@ class ofApp : public ofBaseApp {
 		Emitter* turretEmitter;
 		bool bulletImageLoaded;
 		ofImage bulletImage;
+		ofSoundPlayer shootSound;
 
 		// Mouse click - keeps track of which keys are being held down
 		bool mouseButtonIsDown[3];
 		typedef enum { LEFT_CLICK, SCROLL_CLICK, RIGHT_CLICK } Mouse;
-	
+
 		// ofxGui
 		bool showGUI;
 		ofxToggle showAimAssist;
