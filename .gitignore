@@ -1,0 +1,10 @@
+# Visual Code
+*.make
+*.rc
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/
+bin/
+obj/
