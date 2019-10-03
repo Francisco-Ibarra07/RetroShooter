@@ -20,8 +20,8 @@ public:
 class Sprite : public BaseObject {
 public:
 	Sprite();
-	void draw();
-	float age();
+	void draw(); // Draws sprite
+	float age(); // Keeps track of how long the sprite has been around for
 	void setImage(ofImage);
 	float speed;    //   in pixels/sec
 	ofVec3f velocity; // in pixels/sec
