@@ -2,8 +2,8 @@
 
 void ofApp::setup() {
 	// Initial Project Setup
-	ofSetWindowTitle("Project 1: Part 1 - A Vintage 2D Shooter Arcade Game - Francisco and Nhat");
-	ofBackgroundHex(0xdedede);
+	ofSetWindowTitle("Project 1: Part 2 - A Vintage 2D Shooter Arcade Game - Francisco and Nhat");
+	ofBackgroundHex(0x000000);
 
 	// Game state setup
 	gameState = "start";
@@ -39,17 +39,24 @@ void ofApp::setup() {
 	gui.add(life.setup("life", 5, .1, 10));
 	gui.add(velocity.setup("velocity", ofVec3f(100, -700, 0), ofVec3f(-1000, -1000, -1000), ofVec3f(1000, 1000, 1000)));
 	showGUI = false;
+
+	glm::vec3 position = glm::vec3(player.x, player.y, 0);
+	float _angle = 0.2;
+	glm::mat3 rotateMatix = glm::mat2(cos(_angle), -sin(_angle), sin(_angle), cos(_angle));
+	position = position * rotateMatix;
+
+	player.x = position[0];
+	player.y = position[1];
 }
 
 void ofApp::update() {
 	player.update();
 
-	// Update Turret Emitter variables
-	// If player presses the shoot key (Left mouse key), then new "bullet" sprites can be spawned
-	mouseButtonIsDown[LEFT_CLICK] ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
+	// Update Turret Emitter variables (space to shoot)
+	player.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
 
 	// Shooting direction is between the circle and the mouse location
-	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x, ofGetMouseY() - player.y, 0);
+	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
 
 	turretEmitter->setRate(5);
 	turretEmitter->setLifespan(1000);
@@ -60,44 +67,40 @@ void ofApp::update() {
 
 void ofApp::draw() {
 	if (gameState == "start") {
-		ofSetColor(ofColor::black);
-		font.drawString(startScreenText, ofGetWidth() / 2 - font.stringWidth(startScreenText) / 2, ofGetHeight() / 2);
+		ofSetColor(0xffffff);
+		float textXPosition = (ofGetWidth() - font.stringWidth(startScreenText)) / 2;
+		float textYPosition = (ofGetHeight() - font.stringHeight(startScreenText)) / 2;
+		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
 		player.draw();
 		turretEmitter->draw();
 	}
 
-	if (showGUI) {
-		gui.draw();
-	}
-
-	if (showAimAssist) {
-		ofDrawLine(player.x, player.y, ofGetMouseX(), ofGetMouseY());
-	}
+	// GUI 
+	if (showGUI) gui.draw();
+	if (showAimAssist) ofDrawLine(player.x, player.y, ofGetMouseX(), ofGetMouseY());
 }
 
 void ofApp::keyPressed(int key) {
-	player.movement(key, true);
+	if (key == ' ') gameState = "game"; // Start to game screen
+	if (key == 'h') showGUI = !showGUI; // Show/Hide GUI
 
-	if (key == ' ')
-		gameState = "game";
-
-	// Show/Hide GUI
-	if (key == 'h')
-		showGUI = !showGUI;
+	player.movement(key, true, { 'w', 'a', 's', 'd' });
+	player.shoot(key, true, ' ');
 }
 
 void ofApp::keyReleased(int key) {
-	player.movement(key, false);
+	player.movement(key, false, { 'w', 'a', 's', 'd' });
+	player.shoot(key, false, ' ');
 }
 
 void ofApp::mouseMoved(int x, int y ) {}
 void ofApp::mouseDragged(int x, int y, int button) {}
 void ofApp::mousePressed(int x, int y, int button) {
-	mouseButtonIsDown[button] = true;
+	player.shoot(button, true, 0);
 }
 void ofApp::mouseReleased(int x, int y, int button) {
-	mouseButtonIsDown[button] = false;
+	player.shoot(button, false, 0);
 }
 void ofApp::mouseEntered(int x, int y) {}
 void ofApp::mouseExited(int x, int y) {}

@@ -2,20 +2,25 @@
 
 class Player {
 	public:
-		// TODO: Needs better image size logic
 		float SIZE = 64;
 		float width = SIZE;
 		float height = SIZE;
+		float speed = 8;
+		bool isShooting = false;
 
-		float x, y;
+		float x;
+		float y;
 		ofImage image;
 
-		float speed = 8;
-		bool up, down, right, left;
+		bool up;
+		bool down;
+		bool right;
+		bool left;
 
-		void setup(float x, float y);
+		void setup(float, float);
 		void update();
 		void draw();
 
-		void movement(int key, bool isMoving);
+		void movement(int, bool, vector<char>);
+		void shoot(int, bool, int);
 };
