@@ -6,5 +6,12 @@
 *.vcxproj.filters
 *.vcxproj.user
 .vs/
-bin/
 obj/
+
+# Visual Code bin
+bin/*.dll
+bin/*.exe
+bin/*.exp
+bin/*.ilk
+bin/*.lib
+bin/*.pdb
