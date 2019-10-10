@@ -20,18 +20,22 @@ class ofApp : public ofBaseApp {
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+		void checkCollisions();
 
 		// Player
 		Player player;
 
 		// Game State
 		string gameState;
+		int score;
 
 		// Font
 		ofTrueTypeFont font;
 		string startScreenText;
 
 		// Emitter properties
+		Emitter* invaders;
+		ofImage enemyImage;
 		vector<Emitter*> enemyEmitterList;
 		int numberOfEnemyEmitterList;
 

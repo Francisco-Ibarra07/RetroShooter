@@ -42,6 +42,7 @@ public:
 	void remove(int);
 	void update();
 	void draw();
+	int removeNear(ofVec3f point, float dist);
 	vector<Sprite> sprites;
 };
 
@@ -60,6 +61,7 @@ public:
 	void setLifespan(float);
 	void setVelocity(ofVec3f);
 	void setChildImage(ofImage);
+	void setChildSize(float w, float h) { childWidth = w; childHeight = h; }
 	void setSpawnSound(ofSoundPlayer);
 	void setImage(ofImage);
 	void setRate(float);
@@ -77,6 +79,7 @@ public:
 	bool haveChildImage;
 	bool haveImage;
 	float width, height;
+	float childWidth, childHeight;
 
 	// Sound
 	ofSoundPlayer spawnSound;

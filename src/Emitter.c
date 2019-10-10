@@ -106,6 +106,24 @@ void SpriteSystem::remove(int i) {
 	sprites.erase(sprites.begin() + i);
 }
 
+// remove all sprites within a given dist of point, return number removed
+//
+int SpriteSystem::removeNear(ofVec3f point, float dist) {
+	vector<Sprite>::iterator s = sprites.begin();
+	vector<Sprite>::iterator tmp;
+	int count = 0;
+
+	while (s != sprites.end()) {
+		ofVec3f v = s->trans - point;
+		if (v.length() < dist) {
+			tmp = sprites.erase(s);
+			count++;
+			s = tmp;
+		}
+		else s++;
+	}
+	return count;
+}
 
 //  Update the SpriteSystem by checking which sprites have exceeded their
 //  lifespan (and deleting).  Also the sprite is moved to it's next
