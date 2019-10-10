@@ -39,14 +39,6 @@ void ofApp::setup() {
 	gui.add(life.setup("life", 5, .1, 10));
 	gui.add(velocity.setup("velocity", ofVec3f(100, -700, 0), ofVec3f(-1000, -1000, -1000), ofVec3f(1000, 1000, 1000)));
 	showGUI = false;
-
-	glm::vec3 position = glm::vec3(player.x, player.y, 0);
-	float _angle = 0.2;
-	glm::mat3 rotateMatix = glm::mat2(cos(_angle), -sin(_angle), sin(_angle), cos(_angle));
-	position = position * rotateMatix;
-
-	player.x = position[0];
-	player.y = position[1];
 }
 
 void ofApp::update() {
