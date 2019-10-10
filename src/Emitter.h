@@ -26,6 +26,7 @@ public:
 	float speed;    //   in pixels/sec
 	ofVec3f velocity; // in pixels/sec
 	ofImage image;
+	ofRectangle hitbox;
 	float birthtime; // elapsed time in ms
 	float lifespan;  //  time in ms
 	string name;

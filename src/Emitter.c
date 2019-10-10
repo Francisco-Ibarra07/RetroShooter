@@ -87,6 +87,9 @@ void Sprite::draw() {
 		//ofDrawRectangle(-width / 2.0 + trans.x, -height / 2.0 + trans.y, width, height);
 		ofDrawCircle(-width / 2.0 + trans.x, -height / 2.0 + trans.y, 20);
 	}
+
+	hitbox = ofRectangle(trans.x, trans.y, width, height);
+	//ofDrawRectangle(hitbox);
 }
 
 //  Add a Sprite to the Sprite System
@@ -149,7 +152,6 @@ Emitter::Emitter(SpriteSystem *spriteSys) {
 	lifespan = 3000;    // milliseconds
 	started = false;
 	allowNewSpriteCreation = true;
-
 	haveSpawnSound = false;
 	lastSpawned = 0;
 	rate = 1;    // sprites/sec
