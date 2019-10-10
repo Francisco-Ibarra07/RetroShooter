@@ -7,6 +7,7 @@ void ofApp::setup() {
 
 	// Game state setup
 	gameState = "start";
+	score = 0;
 
 	// Load Font
 	font.load("Squarewave.ttf", 32);
@@ -20,6 +21,7 @@ void ofApp::setup() {
 	// Emitter Setup
 	// Load the bullet image. Exit if failure
 	if (bulletImage.load("images/bullet.png")) bulletImageLoaded = true;
+	enemyImage.load("images/enemy.png");
 
 	// Sound Setup
 	shootSound.load("sounds/shoot.wav");
@@ -32,6 +34,16 @@ void ofApp::setup() {
 	turretEmitter->setSpawnSound(shootSound);
 	turretEmitter->start();
 
+	// Setup enemy
+	invaders = new Emitter(new SpriteSystem());
+	invaders->setPosition(ofVec3f(ofGetWidth() / 2, 10 , 0));
+	invaders->setChildImage(enemyImage);
+	invaders->velocity.set(0, 400, 0);
+	invaders->setLifespan(5000);
+	invaders->setRate(2);
+	invaders->setChildSize(20, 20);
+	invaders->start();
+	
 	// Setup gui
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
@@ -50,11 +62,17 @@ void ofApp::update() {
 	// Shooting direction is between the circle and the mouse location
 	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
 
+	// Update turret properties
 	turretEmitter->setRate(rate);
 	turretEmitter->setLifespan(life * 1000);
 	turretEmitter->setPosition(ofVec3f(player.x + player.width / 2, player.y + player.height / 2, 0));
 	turretEmitter->setVelocity(shootingDirection);
 	turretEmitter->update();
+
+	// Update enemy mothership emitter properties
+	ofVec3f v = invaders->velocity;
+	invaders->setVelocity(ofVec3f(ofRandom(-v.y / 2, v.y / 2), v.y, v.z));
+	invaders->update();
 }
 
 void ofApp::draw() {
@@ -66,11 +84,18 @@ void ofApp::draw() {
 	} else if (gameState == "game") {
 		player.draw();
 		turretEmitter->draw();
+		invaders->draw();
 	}
 
 	// GUI 
 	if (showGUI) gui.draw();
 	if (showAimAssist) ofDrawLine(player.x, player.y, ofGetMouseX(), ofGetMouseY());
+}
+
+void ofApp::checkCollisions() {
+	float collisionDist = 100 + invaders->childHeight / 2;
+	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++)
+		score += invaders->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
 }
 
 void ofApp::keyPressed(int key) {
