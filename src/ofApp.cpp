@@ -50,8 +50,8 @@ void ofApp::update() {
 	// Shooting direction is between the circle and the mouse location
 	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
 
-	turretEmitter->setRate(5);
-	turretEmitter->setLifespan(1000);
+	turretEmitter->setRate(rate);
+	turretEmitter->setLifespan(life * 1000);
 	turretEmitter->setPosition(ofVec3f(player.x + player.width / 2, player.y + player.height / 2, 0));
 	turretEmitter->setVelocity(shootingDirection);
 	turretEmitter->update();

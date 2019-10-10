@@ -48,6 +48,7 @@ class ofApp : public ofBaseApp {
 		// ofxGui
 		bool showGUI;
 		ofxToggle showAimAssist;
+		ofxToggle showSpriteHitboxes;
 		ofxFloatSlider rate;
 		ofxFloatSlider life;
 		ofxVec3Slider velocity;
