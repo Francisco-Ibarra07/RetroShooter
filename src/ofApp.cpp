@@ -89,6 +89,9 @@ void ofApp::update() {
 	ofVec3f v = invaders->velocity;
 	invaders->setVelocity(ofVec3f(ofRandom(-v.y / 2, v.y / 2), v.y, v.z));
 	invaders->update();
+
+	// Check for collisions between the bullets
+	checkCollisions();
 }
 
 void ofApp::draw() {
@@ -115,9 +118,10 @@ void ofApp::draw() {
 }
 
 void ofApp::checkCollisions() {
-	float collisionDist = 100 + invaders->childHeight / 2;
-	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++)
+	float collisionDist = 25 + invaders->childHeight / 2;
+	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++) {
 		score += invaders->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
+	}
 }
 
 void ofApp::keyPressed(int key) {
