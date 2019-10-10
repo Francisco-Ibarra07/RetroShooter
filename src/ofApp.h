@@ -24,6 +24,11 @@ class ofApp : public ofBaseApp {
 
 		// Player
 		Player player;
+		Player player2;
+
+		// Star background
+		vector<ofImage*> backgroundStars;
+		vector<vector<int>> randNum;
 
 		// Game State
 		string gameState;
