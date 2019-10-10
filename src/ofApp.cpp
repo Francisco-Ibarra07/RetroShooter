@@ -16,6 +16,20 @@ void ofApp::setup() {
 	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
 	float playerYPosition = ofGetHeight() - player.height * 4;
 	player.setup(playerXPosition, playerYPosition);
+	player2.setup(playerXPosition, playerYPosition);
+
+	// Star background
+	ofImage* starPtr;
+	int tempSize;
+	for (int i = 0; i < 50; i++) {
+		starPtr = new ofImage();
+		starPtr->load("images/star.png");
+		backgroundStars.push_back(starPtr);
+		tempSize = rand() % 17;
+		randNum.push_back({rand() % ofGetWidth() - 8, rand() % ofGetHeight() - 8, rand() % 16 + 1, tempSize });
+	}
+
+
 
 	// Emitter Setup
 	// Load the bullet image. Exit if failure
@@ -43,9 +57,11 @@ void ofApp::setup() {
 
 void ofApp::update() {
 	player.update();
+	player2.update();
 
 	// Update Turret Emitter variables (space to shoot)
 	player.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
+	player2.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
 
 	// Shooting direction is between the circle and the mouse location
 	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
@@ -65,7 +81,13 @@ void ofApp::draw() {
 		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
 		player.draw();
+		player2.draw();
 		turretEmitter->draw();
+	}
+
+	// Star background
+	for (int i = 0; i < backgroundStars.size(); i++) {
+		backgroundStars[i]->draw(randNum[i][0], randNum[i][1], randNum[i][2], randNum[i][2]);
 	}
 
 	// GUI 
@@ -79,11 +101,15 @@ void ofApp::keyPressed(int key) {
 
 	player.movement(key, true, { 'w', 'a', 's', 'd' });
 	player.shoot(key, true, ' ');
+	player2.movement(key, true, { 'i', 'j', 'k', 'l' });
+	player2.shoot(key, true, ' ');
 }
 
 void ofApp::keyReleased(int key) {
 	player.movement(key, false, { 'w', 'a', 's', 'd' });
 	player.shoot(key, false, ' ');
+	player2.movement(key, false, { 'i', 'j', 'k', 'l' });
+	player2.shoot(key, false, ' ');
 }
 
 void ofApp::mouseMoved(int x, int y ) {}
