@@ -9,9 +9,17 @@ void ofApp::setup() {
 	gameState = "start";
 	score = 0;
 
-	// Load Font
+	// Font setup
 	font.load("font/Squarewave.ttf", 64);
 	startScreenText = "Start Screen (Press Space)";
+
+	// Images setup
+	enemyImage.load("images/enemy.png");
+	bulletImage.load("images/bullet.png");
+
+	// Sounds setup
+	shootSound.load("sounds/shoot.wav");
+	explosionSound.load("sounds/explosion.wav");
 
 	// Player setup
 	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
@@ -21,15 +29,6 @@ void ofApp::setup() {
 	// Star background
 	stars.setup(25);
 
-	// Emitter Setup
-	// Load the bullet image. Exit if failure
-	if (bulletImage.load("images/bullet.png")) bulletImageLoaded = true;
-	enemyImage.load("images/enemy.png");
-
-	// Sound Setup
-	shootSound.load("sounds/shoot.wav");
-	explosionSound.load("sounds/explosion.wav");
-
 	// Setup turret emitter
 	turretEmitter = new Emitter(new SpriteSystem());
 	turretEmitter->setPosition(ofVec3f(player.x, player.y, 0));
@@ -38,7 +37,7 @@ void ofApp::setup() {
 	turretEmitter->setSpawnSound(shootSound);
 	turretEmitter->start();
 
-	// Setup enemy
+	// Setup enemy (top)
 	invaders = new Emitter(new SpriteSystem());
 	invaders->setPosition(ofVec3f(ofGetWidth() / 2, 10 , 0));
 	invaders->setChildImage(enemyImage);
@@ -47,8 +46,8 @@ void ofApp::setup() {
 	invaders->setRate(1);
 	invaders->setChildSize(20, 20);
 	invaders->start();
-	
-	// Setup enemy
+
+	// Setup enemy (bottom)
 	invaders2 = new Emitter(new SpriteSystem());
 	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight(), 0));
 	invaders2->setChildImage(enemyImage);
@@ -57,8 +56,8 @@ void ofApp::setup() {
 	invaders2->setRate(1);
 	invaders2->setChildSize(20, 20);
 	invaders2->start();
-
-	// Setup gui
+	
+	// Setup GUI
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
 	gui.add(rate.setup("rate", 4, 1, 10));
@@ -98,22 +97,22 @@ void ofApp::update() {
 
 void ofApp::draw() {
 	if (gameState == "start") {
+		// Start screen
 		ofSetColor(0xffffff);
 		float textXPosition = (ofGetWidth() - font.stringWidth(startScreenText)) / 2;
 		float textYPosition = (ofGetHeight() - font.stringHeight(startScreenText)) / 2;
 		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
-		// Players
+		// Game screen
+		// Player
 		player.draw();
-		
-		// Player turret
 		turretEmitter->draw();
 		
 		// Invaders
 		invaders->draw();
 		invaders2->draw();
 		
-		// Star background
+		// Stars for background
 		stars.draw();
 		
 		// GUI 
@@ -134,7 +133,6 @@ void ofApp::draw() {
 }
 
 void ofApp::checkCollisions() {
-
 	float collisionDist = 25 + invaders->childHeight / 2;
 	vector<int> removeMe;
 	int oldScore = 0;
@@ -182,20 +180,24 @@ void ofApp::keyPressed(int key) {
 	if (key == ' ') gameState = "game"; // Start to game screen
 	if (key == 'h') showGUI = !showGUI; // Show/Hide GUI
 
+	// Configure player controls (move: wasd, shoot: spacebar)
 	player.movement(key, true, { 'w', 'a', 's', 'd' });
 	player.shoot(key, true, ' ');
 }
 
 void ofApp::keyReleased(int key) {
+	// Configure player controls (move: wasd, shoot: spacebar)
 	player.movement(key, false, { 'w', 'a', 's', 'd' });
 	player.shoot(key, false, ' ');
 }
 
 void ofApp::mousePressed(int x, int y, int button) {
+	// Configure player controls (shoot: left click)
 	player.shoot(button, true, 0);
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
+	// Configure player controls (shoot: left click)
 	player.shoot(button, false, 0);
 }
 

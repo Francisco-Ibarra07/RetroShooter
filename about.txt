@@ -1,4 +1,4 @@
-Sprite was created using browser design tool
+Sprites was created using browser design tool
 https://www.figma.com/
 
 Sounds created using an online retro-style sound effect generator
