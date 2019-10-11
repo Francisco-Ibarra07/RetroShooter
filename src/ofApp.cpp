@@ -9,28 +9,25 @@ void ofApp::setup() {
 	gameState = "start";
 	score = 0;
 
-	// Load Font
+	// Font setup
 	font.load("font/Squarewave.ttf", 64);
 	startScreenText = "Start Screen (Press Space)";
+
+	// Images setup
+	enemyImage.load("images/enemy.png");
+	bulletImage.load("images/bullet.png");
+
+	// Sounds setup
+	shootSound.load("sounds/shoot.wav");
+	explosionSound.load("sounds/explosion.wav");
 
 	// Player setup
 	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
 	float playerYPosition = ofGetHeight() - player.height * 4;
 	player.setup(playerXPosition, playerYPosition);
-	// player2.setup(playerXPosition, playerYPosition);
 
 	// Star background
 	stars.setup(25);
-
-	// Emitter Setup
-	// Load the bullet image. Exit if failure
-	if (bulletImage.load("images/bullet.png")) bulletImageLoaded = true;
-	enemyImage.load("images/enemy.png");
-
-	// Sound Setup
-	shootSound.load("sounds/shoot.wav");
-	explosionSound.load("sounds/explosion.wav");
-
 
 	// Setup turret emitter
 	turretEmitter = new Emitter(new SpriteSystem());
@@ -40,7 +37,7 @@ void ofApp::setup() {
 	turretEmitter->setSpawnSound(shootSound);
 	turretEmitter->start();
 
-	// Setup enemy
+	// Setup enemy (top)
 	invaders = new Emitter(new SpriteSystem());
 	invaders->setPosition(ofVec3f(ofGetWidth() / 2, 10 , 0));
 	invaders->setChildImage(enemyImage);
@@ -50,7 +47,7 @@ void ofApp::setup() {
 	invaders->setChildSize(20, 20);
 	invaders->start();
 
-	// Setup enemy
+	// Setup enemy (bottom)
 	invaders2 = new Emitter(new SpriteSystem());
 	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight(), 0));
 	invaders2->setChildImage(enemyImage);
@@ -60,7 +57,7 @@ void ofApp::setup() {
 	invaders2->setChildSize(20, 20);
 	invaders2->start();
 	
-	// Setup gui
+	// Setup GUI
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
 	gui.add(rate.setup("rate", 4, 1, 10));
@@ -71,11 +68,9 @@ void ofApp::setup() {
 
 void ofApp::update() {
 	player.update();
-	// player2.update();
 
 	// Update Turret Emitter variables (space to shoot)
 	player.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
-	// player2.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
 
 	// Shooting direction is between the circle and the mouse location
 	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
@@ -102,21 +97,22 @@ void ofApp::update() {
 
 void ofApp::draw() {
 	if (gameState == "start") {
+		// Start screen
 		ofSetColor(0xffffff);
 		float textXPosition = (ofGetWidth() - font.stringWidth(startScreenText)) / 2;
 		float textYPosition = (ofGetHeight() - font.stringHeight(startScreenText)) / 2;
 		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
-		// Players
+		// Game screen
+		// Player
 		player.draw();
-		// player2.draw();
 		turretEmitter->draw();
 		
 		// Invaders
 		invaders->draw();
 		invaders2->draw();
 		
-		// Star background
+		// Stars for background
 		stars.draw();
 		
 		// GUI 
@@ -126,11 +122,9 @@ void ofApp::draw() {
 }
 
 void ofApp::checkCollisions() {
-
 	float collisionDist = 25 + invaders->childHeight / 2;
 	vector<int> removeMe;
 	int oldScore = 0;
-
 	// Check collisions between bullet and invader 
 	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++) {
 		oldScore = score;
@@ -157,27 +151,25 @@ void ofApp::keyPressed(int key) {
 	if (key == ' ') gameState = "game"; // Start to game screen
 	if (key == 'h') showGUI = !showGUI; // Show/Hide GUI
 
+	// Configure player controls (move: wasd, shoot: spacebar)
 	player.movement(key, true, { 'w', 'a', 's', 'd' });
 	player.shoot(key, true, ' ');
-	// player2.movement(key, true, { 'i', 'j', 'k', 'l' });
-	// player2.shoot(key, true, ' ');
 }
 
 void ofApp::keyReleased(int key) {
+	// Configure player controls (move: wasd, shoot: spacebar)
 	player.movement(key, false, { 'w', 'a', 's', 'd' });
 	player.shoot(key, false, ' ');
-	// player2.movement(key, false, { 'i', 'j', 'k', 'l' });
-	// player2.shoot(key, false, ' ');
 }
 
 void ofApp::mousePressed(int x, int y, int button) {
+	// Configure player controls (shoot: left click)
 	player.shoot(button, true, 0);
-	// player2.shoot(button, true, 0);
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
+	// Configure player controls (shoot: left click)
 	player.shoot(button, false, 0);
-	// player2.shoot(button, false, 0);
 }
 
 // Unused openFrameworks methods

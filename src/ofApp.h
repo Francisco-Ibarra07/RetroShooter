@@ -25,7 +25,6 @@ class ofApp : public ofBaseApp {
 
 		// Player
 		Player player;
-		// Player player2;
 
 		// Star background
 		Stars stars;
@@ -49,10 +48,6 @@ class ofApp : public ofBaseApp {
 		ofImage bulletImage;
 		ofSoundPlayer shootSound;
 		ofSoundPlayer explosionSound;
-
-		// Mouse click - keeps track of which keys are being held down
-		bool mouseButtonIsDown[3];
-		typedef enum { LEFT_CLICK, SCROLL_CLICK, RIGHT_CLICK } Mouse;
 
 		// ofxGui
 		bool showGUI;
