@@ -48,7 +48,7 @@ void ofApp::setup() {
 	invaders->setChildImage(enemyImage);
 	invaders->velocity.set(0, 400, 0);
 	invaders->setLifespan(5000);
-	invaders->setRate(1);
+	invaders->setRate(2);
 	invaders->setChildSize(20, 20);
 	invaders->setImage(mothershipImage);
 	invaders->start();
@@ -59,7 +59,7 @@ void ofApp::setup() {
 	invaders2->setChildImage(enemyImage);
 	invaders2->velocity.set(0, 400, 0);
 	invaders2->setLifespan(5000);
-	invaders2->setRate(1);
+	invaders2->setRate(2);
 	invaders2->setChildSize(20, 20);
 	invaders2->setImage(mothershipImage);
 	invaders2->start();
