@@ -23,4 +23,5 @@ class Player {
 
 		void movement(int, bool, vector<char>);
 		void shoot(int, bool, int);
+		bool collides(ofRectangle);
 };

@@ -30,3 +30,13 @@ void Player::movement(int key, bool isMoving, vector<char> movementKeys) {
 void Player::shoot(int button, bool _isShooting, int shootKey) {
 	if (button == shootKey) isShooting = _isShooting;
 }
+
+bool Player::collides(ofRectangle hitbox) {
+
+	bool x_range = (x < hitbox.x + hitbox.width) &&
+		(x + width > hitbox.x);
+	bool y_range = (y < hitbox.y + hitbox.height) &&
+		(y + height > hitbox.y);
+
+	return (x_range && y_range) ? true : false;
+}
