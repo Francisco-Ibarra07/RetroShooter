@@ -44,7 +44,7 @@ void ofApp::setup() {
 
 	// Setup enemy (top)
 	invaders = new Emitter(new SpriteSystem());
-	invaders->setPosition(ofVec3f(ofGetWidth() / 2, mothershipImage.getHeight(), 0));
+	invaders->setPosition(ofVec3f(rand() % ofGetWidth(), mothershipImage.getHeight(), 0));
 	invaders->setChildImage(enemyImage);
 	invaders->velocity.set(0, 400, 0);
 	invaders->setLifespan(5000);
@@ -55,7 +55,7 @@ void ofApp::setup() {
 
 	// Setup enemy (bottom)
 	invaders2 = new Emitter(new SpriteSystem());
-	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight() - mothershipImage.getHeight(), 0));
+	invaders2->setPosition(ofVec3f(rand() % ofGetWidth(), ofGetHeight() - mothershipImage.getHeight(), 0));
 	invaders2->setChildImage(enemyImage);
 	invaders2->velocity.set(0, 400, 0);
 	invaders2->setLifespan(5000);
@@ -100,6 +100,22 @@ void ofApp::update() {
 
 	// Check for collisions between the bullets
 	checkCollisions();
+
+	// Enemies side to side movement
+	if (move1) {
+		invaders->setPosition(ofVec3f(invaders->trans.x + 10, invaders->trans.y, 0));
+		if (invaders->trans.x > ofGetWidth()) move1 = !move1;
+	} else {
+		invaders->setPosition(ofVec3f(invaders->trans.x - 10, invaders->trans.y, 0));
+		if (invaders->trans.x < 0) move1 = !move1;
+	}
+	if (move2) {
+		invaders2->setPosition(ofVec3f(invaders2->trans.x + 10, invaders2->trans.y, 0));
+		if (invaders2->trans.x > ofGetWidth()) move2 = !move2;
+	} else {
+		invaders2->setPosition(ofVec3f(invaders2->trans.x - 10, invaders2->trans.y, 0));
+		if (invaders2->trans.x < 0) move2 = !move2;
+	}
 }
 
 void ofApp::draw() {
@@ -134,6 +150,9 @@ void ofApp::draw() {
 		}
 
 		// Game screen
+		// Stars for background
+		stars.draw();
+
 		// Player
 		player.draw();
 		turretEmitter->draw();
@@ -232,8 +251,10 @@ void ofApp::keyPressed(int key) {
 	if (key == 'h') showGUI = !showGUI; // Show/Hide GUI
 
 	// Configure player controls (move: wasd, shoot: spacebar)
-	player.movement(key, true, { 'w', 'a', 's', 'd' });
-	player.shoot(key, true, ' ');
+	if (gameState == "game") {
+		player.movement(key, true, { 'w', 'a', 's', 'd' });
+		player.shoot(key, true, ' ');
+	}
 }
 
 void ofApp::keyReleased(int key) {
