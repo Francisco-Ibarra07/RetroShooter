@@ -20,10 +20,13 @@ void ofApp::setup() {
 	// Sounds setup
 	shootSound.load("sounds/shoot.wav");
 	explosionSound.load("sounds/explosion.wav");
+	music.load("sounds/music.wav");
+	music.setLoop(true);
+	music.play();
 
 	// Player setup
-	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
-	float playerYPosition = ofGetHeight() - player.height * 4;
+	float playerXPosition = (ofGetWidth() - player.width) / 2;
+	float playerYPosition = (ofGetHeight() - player.height) / 2;
 	player.setup(playerXPosition, playerYPosition);
 
 	// Star background

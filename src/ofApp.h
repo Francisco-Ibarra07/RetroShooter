@@ -29,6 +29,9 @@ class ofApp : public ofBaseApp {
 		// Star background
 		Stars stars;
 
+		// Music
+		ofSoundPlayer music;
+
 		// Game State
 		string gameState;
 		int score;
