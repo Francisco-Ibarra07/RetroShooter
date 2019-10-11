@@ -17,7 +17,6 @@ void ofApp::setup() {
 	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
 	float playerYPosition = ofGetHeight() - player.height * 4;
 	player.setup(playerXPosition, playerYPosition);
-	// player2.setup(playerXPosition, playerYPosition);
 
 	// Star background
 	stars.setup(25);
@@ -30,7 +29,6 @@ void ofApp::setup() {
 	// Sound Setup
 	shootSound.load("sounds/shoot.wav");
 	explosionSound.load("sounds/explosion.wav");
-
 
 	// Setup turret emitter
 	turretEmitter = new Emitter(new SpriteSystem());
@@ -49,7 +47,7 @@ void ofApp::setup() {
 	invaders->setRate(1);
 	invaders->setChildSize(20, 20);
 	invaders->start();
-
+	
 	// Setup enemy
 	invaders2 = new Emitter(new SpriteSystem());
 	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight(), 0));
@@ -59,7 +57,7 @@ void ofApp::setup() {
 	invaders2->setRate(1);
 	invaders2->setChildSize(20, 20);
 	invaders2->start();
-	
+
 	// Setup gui
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
@@ -71,11 +69,9 @@ void ofApp::setup() {
 
 void ofApp::update() {
 	player.update();
-	// player2.update();
 
 	// Update Turret Emitter variables (space to shoot)
 	player.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
-	// player2.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
 
 	// Shooting direction is between the circle and the mouse location
 	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
@@ -109,7 +105,8 @@ void ofApp::draw() {
 	} else if (gameState == "game") {
 		// Players
 		player.draw();
-		// player2.draw();
+		
+		// Player turret
 		turretEmitter->draw();
 		
 		// Invaders
@@ -122,6 +119,17 @@ void ofApp::draw() {
 		// GUI 
 		if (showGUI) gui.draw();
 		if (showAimAssist) ofDrawLine(player.x + player.width / 2, player.y + player.height / 2, ofGetMouseX(), ofGetMouseY());
+	
+	} else if (gameState == "gameover") {
+		turretEmitter->stop();
+		invaders->stop();
+		invaders2->stop();
+
+		ofSetColor(0xffffff);
+		float textXPosition = (ofGetWidth() - font.stringWidth("You Lose")) / 2;
+		float textYPosition = (ofGetHeight() - font.stringHeight("You Lose")) / 2;
+		font.drawString("You Lose", textXPosition, textYPosition);
+		font.drawString("Press Space to try again", textXPosition, textYPosition + font.stringHeight("You Lose"));
 	}
 }
 
@@ -130,6 +138,7 @@ void ofApp::checkCollisions() {
 	float collisionDist = 25 + invaders->childHeight / 2;
 	vector<int> removeMe;
 	int oldScore = 0;
+	ofRectangle invaderHitbox;
 
 	// Check collisions between bullet and invader 
 	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++) {
@@ -149,8 +158,24 @@ void ofApp::checkCollisions() {
 		}
 	}
 
+	// Remove any bullet sprites that hit an invader
 	for (int index : removeMe)
 		turretEmitter->sys->remove(index);
+
+	// Check if the player hit an invader
+	for (int i = 0; i < invaders->sys->sprites.size(); i++) {
+		if (player.collides(invaders->sys->sprites[i].hitbox)) {
+			gameState = "gameover";
+			return;
+		}
+	}
+
+	for (int i = 0; i < invaders2->sys->sprites.size(); i++) {
+		if (player.collides(invaders2->sys->sprites[i].hitbox)) {
+			gameState = "gameover";
+			return;
+		}
+	}
 }
 
 void ofApp::keyPressed(int key) {
@@ -159,25 +184,19 @@ void ofApp::keyPressed(int key) {
 
 	player.movement(key, true, { 'w', 'a', 's', 'd' });
 	player.shoot(key, true, ' ');
-	// player2.movement(key, true, { 'i', 'j', 'k', 'l' });
-	// player2.shoot(key, true, ' ');
 }
 
 void ofApp::keyReleased(int key) {
 	player.movement(key, false, { 'w', 'a', 's', 'd' });
 	player.shoot(key, false, ' ');
-	// player2.movement(key, false, { 'i', 'j', 'k', 'l' });
-	// player2.shoot(key, false, ' ');
 }
 
 void ofApp::mousePressed(int x, int y, int button) {
 	player.shoot(button, true, 0);
-	// player2.shoot(button, true, 0);
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
 	player.shoot(button, false, 0);
-	// player2.shoot(button, false, 0);
 }
 
 // Unused openFrameworks methods
