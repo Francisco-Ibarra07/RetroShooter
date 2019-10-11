@@ -22,7 +22,7 @@ class ofApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		void checkCollisions();
-
+		bool once = true;
 		// Player
 		Player player;
 

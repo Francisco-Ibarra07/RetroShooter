@@ -97,12 +97,35 @@ void ofApp::update() {
 
 void ofApp::draw() {
 	if (gameState == "start") {
+
+		// Stop all emitters
+		turretEmitter->stop();
+		invaders->stop();
+		invaders2->stop();
+
+		// Clear all sprites from emitters
+		invaders->sys->sprites.clear();
+		invaders2->sys->sprites.clear();
+		turretEmitter->sys->sprites.clear();
+
+		// Reset player position
+		player.x = ofGetWidth() / 2;
+		player.y = ofGetHeight() / 2;
+
 		// Start screen
 		ofSetColor(0xffffff);
 		float textXPosition = (ofGetWidth() - font.stringWidth(startScreenText)) / 2;
 		float textYPosition = (ofGetHeight() - font.stringHeight(startScreenText)) / 2;
 		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
+
+		if (once) {
+			turretEmitter->start();
+			invaders->start();
+			invaders2->start();
+			once = false;
+		}
+
 		// Game screen
 		// Player
 		player.draw();
@@ -120,15 +143,27 @@ void ofApp::draw() {
 		if (showAimAssist) ofDrawLine(player.x + player.width / 2, player.y + player.height / 2, ofGetMouseX(), ofGetMouseY());
 	
 	} else if (gameState == "gameover") {
+
+		// Stop all emitters
 		turretEmitter->stop();
 		invaders->stop();
 		invaders2->stop();
+
+		// Clear all sprites from emitters
+		invaders->sys->sprites.clear();
+		invaders2->sys->sprites.clear();
+		turretEmitter->sys->sprites.clear();
+
+		// Reset player position
+		player.x = ofGetWidth() / 2;
+		player.y = ofGetHeight() / 2;
 
 		ofSetColor(0xffffff);
 		float textXPosition = (ofGetWidth() - font.stringWidth("You Lose")) / 2;
 		float textYPosition = (ofGetHeight() - font.stringHeight("You Lose")) / 2;
 		font.drawString("You Lose", textXPosition, textYPosition);
 		font.drawString("Press Space to try again", textXPosition, textYPosition + font.stringHeight("You Lose"));
+		once = true;
 	}
 }
 
