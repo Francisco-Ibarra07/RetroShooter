@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "Player.h"
 #include "Emitter.h"
+#include "Stars.h"
 
 class ofApp : public ofBaseApp {
 	public:
@@ -24,11 +25,10 @@ class ofApp : public ofBaseApp {
 
 		// Player
 		Player player;
-		Player player2;
+		// Player player2;
 
 		// Star background
-		vector<ofImage*> backgroundStars;
-		vector<vector<int>> randNum;
+		Stars stars;
 
 		// Game State
 		string gameState;

@@ -17,20 +17,10 @@ void ofApp::setup() {
 	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
 	float playerYPosition = ofGetHeight() - player.height * 4;
 	player.setup(playerXPosition, playerYPosition);
-	player2.setup(playerXPosition, playerYPosition);
+	// player2.setup(playerXPosition, playerYPosition);
 
 	// Star background
-	ofImage* starPtr;
-	int tempSize;
-	for (int i = 0; i < 50; i++) {
-		starPtr = new ofImage();
-		starPtr->load("images/star.png");
-		backgroundStars.push_back(starPtr);
-		tempSize = rand() % 17;
-		randNum.push_back({rand() % ofGetWidth() - 8, rand() % ofGetHeight() - 8, rand() % 16 + 1, tempSize });
-	}
-
-
+	stars.setup(25);
 
 	// Emitter Setup
 	// Load the bullet image. Exit if failure
@@ -69,11 +59,11 @@ void ofApp::setup() {
 
 void ofApp::update() {
 	player.update();
-	player2.update();
+	// player2.update();
 
 	// Update Turret Emitter variables (space to shoot)
 	player.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
-	player2.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
+	// player2.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
 
 	// Shooting direction is between the circle and the mouse location
 	ofVec3f shootingDirection = ofVec3f(ofGetMouseX() - player.x - player.width / 2, ofGetMouseY() - player.y - player.height / 2, 0);
@@ -101,20 +91,21 @@ void ofApp::draw() {
 		float textYPosition = (ofGetHeight() - font.stringHeight(startScreenText)) / 2;
 		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
+		// Players
 		player.draw();
-		player2.draw();
+		// player2.draw();
 		turretEmitter->draw();
+		
+		// Invaders
 		invaders->draw();
+		
+		// Star background
+		stars.draw();
+		
+		// GUI 
+		if (showGUI) gui.draw();
+		if (showAimAssist) ofDrawLine(player.x, player.y, ofGetMouseX(), ofGetMouseY());
 	}
-
-	// Star background
-	for (int i = 0; i < backgroundStars.size(); i++) {
-		backgroundStars[i]->draw(randNum[i][0], randNum[i][1], randNum[i][2], randNum[i][2]);
-	}
-
-	// GUI 
-	if (showGUI) gui.draw();
-	if (showAimAssist) ofDrawLine(player.x, player.y, ofGetMouseX(), ofGetMouseY());
 }
 
 void ofApp::checkCollisions() {
@@ -130,25 +121,30 @@ void ofApp::keyPressed(int key) {
 
 	player.movement(key, true, { 'w', 'a', 's', 'd' });
 	player.shoot(key, true, ' ');
-	player2.movement(key, true, { 'i', 'j', 'k', 'l' });
-	player2.shoot(key, true, ' ');
+	// player2.movement(key, true, { 'i', 'j', 'k', 'l' });
+	// player2.shoot(key, true, ' ');
 }
 
 void ofApp::keyReleased(int key) {
 	player.movement(key, false, { 'w', 'a', 's', 'd' });
 	player.shoot(key, false, ' ');
-	player2.movement(key, false, { 'i', 'j', 'k', 'l' });
-	player2.shoot(key, false, ' ');
+	// player2.movement(key, false, { 'i', 'j', 'k', 'l' });
+	// player2.shoot(key, false, ' ');
 }
 
-void ofApp::mouseMoved(int x, int y ) {}
-void ofApp::mouseDragged(int x, int y, int button) {}
 void ofApp::mousePressed(int x, int y, int button) {
 	player.shoot(button, true, 0);
+	// player2.shoot(button, true, 0);
 }
+
 void ofApp::mouseReleased(int x, int y, int button) {
 	player.shoot(button, false, 0);
+	// player2.shoot(button, false, 0);
 }
+
+// Unused openFrameworks methods
+void ofApp::mouseMoved(int x, int y ) {}
+void ofApp::mouseDragged(int x, int y, int button) {}
 void ofApp::mouseEntered(int x, int y) {}
 void ofApp::mouseExited(int x, int y) {}
 void ofApp::windowResized(int w, int h) {}
