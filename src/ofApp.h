@@ -44,6 +44,7 @@ class ofApp : public ofBaseApp {
 		Emitter* invaders;
 		Emitter* invaders2;
 		ofImage enemyImage;
+		ofImage mothershipImage;
 
 		// Turret Emitter
 		Emitter* turretEmitter;

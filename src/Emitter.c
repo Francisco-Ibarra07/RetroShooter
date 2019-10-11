@@ -269,6 +269,7 @@ void Emitter::setChildImage(ofImage img) {
 
 void Emitter::setImage(ofImage img) {
 	image = img;
+	haveImage = true;
 }
 
 void Emitter::setRate(float r) {

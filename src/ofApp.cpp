@@ -16,6 +16,7 @@ void ofApp::setup() {
 	// Images setup
 	enemyImage.load("images/enemy.png");
 	bulletImage.load("images/bullet.png");
+	mothershipImage.load("images/boss.png");
 
 	// Sounds setup
 	shootSound.load("sounds/shoot.wav");
@@ -48,6 +49,7 @@ void ofApp::setup() {
 	invaders->setLifespan(5000);
 	invaders->setRate(1);
 	invaders->setChildSize(20, 20);
+	invaders->setImage(mothershipImage);
 	invaders->start();
 
 	// Setup enemy (bottom)
@@ -58,6 +60,7 @@ void ofApp::setup() {
 	invaders2->setLifespan(5000);
 	invaders2->setRate(1);
 	invaders2->setChildSize(20, 20);
+	invaders2->setImage(mothershipImage);
 	invaders2->start();
 	
 	// Setup GUI
