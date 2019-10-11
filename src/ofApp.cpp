@@ -25,8 +25,8 @@ void ofApp::setup() {
 	music.play();
 
 	// Player setup
-	float playerXPosition = ofGetWidth() / 2 - player.width / 2;
-	float playerYPosition = ofGetHeight() - player.height * 4;
+	float playerXPosition = (ofGetWidth() - player.width) / 2;
+	float playerYPosition = (ofGetHeight() - player.height) / 2;
 	player.setup(playerXPosition, playerYPosition);
 
 	// Star background
