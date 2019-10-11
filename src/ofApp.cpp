@@ -10,7 +10,7 @@ void ofApp::setup() {
 	score = 0;
 
 	// Load Font
-	font.load("Squarewave.ttf", 32);
+	font.load("font/Squarewave.ttf", 64);
 	startScreenText = "Start Screen (Press Space)";
 
 	// Player setup
@@ -44,14 +44,24 @@ void ofApp::setup() {
 	invaders->setChildImage(enemyImage);
 	invaders->velocity.set(0, 400, 0);
 	invaders->setLifespan(5000);
-	invaders->setRate(2);
+	invaders->setRate(1);
 	invaders->setChildSize(20, 20);
 	invaders->start();
+
+	// Setup enemy
+	invaders2 = new Emitter(new SpriteSystem());
+	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight(), 0));
+	invaders2->setChildImage(enemyImage);
+	invaders2->velocity.set(0, 400, 0);
+	invaders2->setLifespan(5000);
+	invaders2->setRate(1);
+	invaders2->setChildSize(20, 20);
+	invaders2->start();
 	
 	// Setup gui
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
-	gui.add(rate.setup("rate", 8, 1, 10));
+	gui.add(rate.setup("rate", 4, 1, 10));
 	gui.add(life.setup("life", 5, .1, 10));
 	gui.add(velocity.setup("velocity", ofVec3f(100, -700, 0), ofVec3f(-1000, -1000, -1000), ofVec3f(1000, 1000, 1000)));
 	showGUI = false;
@@ -80,6 +90,10 @@ void ofApp::update() {
 	invaders->setVelocity(ofVec3f(ofRandom(-v.y / 2, v.y / 2), v.y, v.z));
 	invaders->update();
 
+	ofVec3f v2 = -1 * invaders->velocity;
+	invaders2->setVelocity(ofVec3f(ofRandom(-v2.y / 2, v2.y / 2), v2.y, v2.z));
+	invaders2->update();
+
 	// Check for collisions between the bullets
 	checkCollisions();
 }
@@ -98,6 +112,7 @@ void ofApp::draw() {
 		
 		// Invaders
 		invaders->draw();
+		invaders2->draw();
 		
 		// Star background
 		stars.draw();
@@ -110,14 +125,22 @@ void ofApp::draw() {
 
 void ofApp::checkCollisions() {
 	float collisionDist = 25 + invaders->childHeight / 2;
-	int oldScore = 0;
 	vector<int> removeMe;
+	vector<int> removeMe2;
+	int oldScore = 0;
 
 	// Check collisions between bullet and invader 
 	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++) {
 		oldScore = score;
 		score += invaders->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
 		if (score > oldScore) {
+			oldScore = score;
+			removeMe.push_back(i);
+		}
+		
+		score += invaders2->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
+		if (score > oldScore) {
+			oldScore = score;
 			removeMe.push_back(i);
 		}
 	}
