@@ -37,6 +37,7 @@ class ofApp : public ofBaseApp {
 		int score;
 
 		// Font
+		ofTrueTypeFont scoreFont;
 		ofTrueTypeFont font;
 		string startScreenText;
 

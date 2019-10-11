@@ -11,6 +11,7 @@ void ofApp::setup() {
 
 	// Font setup
 	font.load("font/Squarewave.ttf", 64);
+	scoreFont.load("font/Squarewave.ttf", 30);
 	startScreenText = "Start Screen (Press Space)";
 
 	// Images setup
@@ -43,7 +44,7 @@ void ofApp::setup() {
 
 	// Setup enemy (top)
 	invaders = new Emitter(new SpriteSystem());
-	invaders->setPosition(ofVec3f(ofGetWidth() / 2, 10 , 0));
+	invaders->setPosition(ofVec3f(ofGetWidth() / 2, mothershipImage.getHeight(), 0));
 	invaders->setChildImage(enemyImage);
 	invaders->velocity.set(0, 400, 0);
 	invaders->setLifespan(5000);
@@ -54,7 +55,7 @@ void ofApp::setup() {
 
 	// Setup enemy (bottom)
 	invaders2 = new Emitter(new SpriteSystem());
-	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight(), 0));
+	invaders2->setPosition(ofVec3f(ofGetWidth() / 2, ofGetHeight() - mothershipImage.getHeight(), 0));
 	invaders2->setChildImage(enemyImage);
 	invaders2->velocity.set(0, 400, 0);
 	invaders2->setLifespan(5000);
@@ -144,6 +145,12 @@ void ofApp::draw() {
 		// Stars for background
 		stars.draw();
 		
+		// Draw player score
+		string scoreString = "Score: " + to_string(score);
+		float textXPosition = font.stringWidth(scoreString);
+		float textYPosition = font.stringHeight(scoreString);
+		scoreFont.drawString(scoreString, textXPosition, textYPosition);
+
 		// GUI 
 		if (showGUI) gui.draw();
 		if (showAimAssist) ofDrawLine(player.x + player.width / 2, player.y + player.height / 2, ofGetMouseX(), ofGetMouseY());
@@ -163,6 +170,9 @@ void ofApp::draw() {
 		// Reset player position
 		player.x = ofGetWidth() / 2;
 		player.y = ofGetHeight() / 2;
+
+		// Reset score
+		score = 0;
 
 		ofSetColor(0xffffff);
 		float textXPosition = (ofGetWidth() - font.stringWidth("You Lose")) / 2;
