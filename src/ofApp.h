@@ -42,14 +42,13 @@ class ofApp : public ofBaseApp {
 		Emitter* invaders;
 		Emitter* invaders2;
 		ofImage enemyImage;
-		// vector<Emitter*> enemyEmitterList;
-		// int numberOfEnemyEmitterList;
 
 		// Turret Emitter
 		Emitter* turretEmitter;
 		bool bulletImageLoaded;
 		ofImage bulletImage;
 		ofSoundPlayer shootSound;
+		ofSoundPlayer explosionSound;
 
 		// Mouse click - keeps track of which keys are being held down
 		bool mouseButtonIsDown[3];

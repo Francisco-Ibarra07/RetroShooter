@@ -29,6 +29,8 @@ void ofApp::setup() {
 
 	// Sound Setup
 	shootSound.load("sounds/shoot.wav");
+	explosionSound.load("sounds/explosion.wav");
+
 
 	// Setup turret emitter
 	turretEmitter = new Emitter(new SpriteSystem());
@@ -124,9 +126,9 @@ void ofApp::draw() {
 }
 
 void ofApp::checkCollisions() {
+
 	float collisionDist = 25 + invaders->childHeight / 2;
 	vector<int> removeMe;
-	vector<int> removeMe2;
 	int oldScore = 0;
 
 	// Check collisions between bullet and invader 
@@ -135,12 +137,14 @@ void ofApp::checkCollisions() {
 		score += invaders->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
 		if (score > oldScore) {
 			oldScore = score;
+			explosionSound.play();
 			removeMe.push_back(i);
 		}
 		
 		score += invaders2->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
 		if (score > oldScore) {
 			oldScore = score;
+			explosionSound.play();
 			removeMe.push_back(i);
 		}
 	}
