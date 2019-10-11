@@ -104,15 +104,26 @@ void ofApp::draw() {
 		
 		// GUI 
 		if (showGUI) gui.draw();
-		if (showAimAssist) ofDrawLine(player.x, player.y, ofGetMouseX(), ofGetMouseY());
+		if (showAimAssist) ofDrawLine(player.x + player.width / 2, player.y + player.height / 2, ofGetMouseX(), ofGetMouseY());
 	}
 }
 
 void ofApp::checkCollisions() {
 	float collisionDist = 25 + invaders->childHeight / 2;
+	int oldScore = 0;
+	vector<int> removeMe;
+
+	// Check collisions between bullet and invader 
 	for (int i = 0; i < turretEmitter->sys->sprites.size(); i++) {
+		oldScore = score;
 		score += invaders->sys->removeNear(turretEmitter->sys->sprites[i].trans, collisionDist);
+		if (score > oldScore) {
+			removeMe.push_back(i);
+		}
 	}
+
+	for (int index : removeMe)
+		turretEmitter->sys->remove(index);
 }
 
 void ofApp::keyPressed(int key) {
