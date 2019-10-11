@@ -40,9 +40,10 @@ class ofApp : public ofBaseApp {
 
 		// Emitter properties
 		Emitter* invaders;
+		Emitter* invaders2;
 		ofImage enemyImage;
-		vector<Emitter*> enemyEmitterList;
-		int numberOfEnemyEmitterList;
+		// vector<Emitter*> enemyEmitterList;
+		// int numberOfEnemyEmitterList;
 
 		// Turret Emitter
 		Emitter* turretEmitter;
