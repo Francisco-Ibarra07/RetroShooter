@@ -1,5 +1,13 @@
-Sprites was created using browser design tool
+Sprites were created by Nhat using Figma
 https://www.figma.com/
 
-Sounds created using an online retro-style sound effect generator
+Sound effects were created by Nhat using an online retro-style sound effect generator
 https://www.leshylabs.com/apps/sfMaker/
+
+The game features royalty-free music found here
+https://www.playonloop.com/2018-music-loops/galactic-trek/
+
+Use open source fonts
+https://github.com/adobe-fonts/source-sans-pro
+
+
