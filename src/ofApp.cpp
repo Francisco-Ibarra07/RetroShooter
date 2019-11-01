@@ -195,7 +195,7 @@ void ofApp::draw() {
 		// GUI Related
 		gui_time_background.draw(36, 48);
 		gui_score_background.draw(36, 138);
-		gui_time_font.drawString(to_string((int)ofGetElapsedTimef()), 184, 112);
+		gui_time_font.drawString(to_string((int)ofGetElapsedTimef()) + "s", 184, 112);
 		gui_score_font.drawString(to_string(score), 184, 202);
 		gui_fps_font.drawString("FPS: " + to_string((int)ofGetFrameRate()), 36, 264);
 
