@@ -1,18 +1,38 @@
+/**
+ * Authors:   Francisco Ibarra & Nhat Nguyen
+ * Updated:   11.01.2019
+ * Professor: Kevin Smith
+ * Class:     CS 134
+ *
+ * REQUIREMENT: When bullet hit ship, explosion particle
+ * NICE TO HAVE: Change the more things with difficulty
+ * NICE TO HAVE: Bullet despawns when outside the viewport
+ * BUG: Collition is slight off with player and enemy
+ * BUG: Player bullets adds to score without enemies
+ * BUG: Sometimes error when bullet collide with enemy
+ **/
+
 #include "ofApp.h"
 
 void ofApp::setup() {
 	// Initial Project Setup
-	ofSetWindowTitle("Project 1: Part 2 - A Vintage 2D Shooter Arcade Game - Francisco and Nhat");
-	ofBackgroundHex(0x000000);
+	ofSetWindowTitle("Sigma Sky - Francisco and Nhat");
+	ofBackgroundHex(0x202020);
 
 	// Game state setup
 	gameState = "start";
 	score = 0;
 
-	// Font setup
-	font.load("font/Squarewave.ttf", 64);
-	scoreFont.load("font/Squarewave.ttf", 30);
-	startScreenText = "Start Screen (Press Space)";
+	// GUI setup
+	logo.load("images/logo.png");
+	title.load(UI_FONT, 64);
+	subtitle.load(UI_FONT, 24);
+
+	gui_time_background.load("images/gui_time_background.png");
+	gui_score_background.load("images/gui_score_background.png");
+	gui_time_font.load(UI_FONT, UI_SIZE);
+	gui_score_font.load(UI_FONT, UI_SIZE);
+	gui_fps_font.load(UI_FONT, UI_SIZE + 6);
 
 	// Images setup
 	enemyImage.load("images/enemy.png");
@@ -64,7 +84,7 @@ void ofApp::setup() {
 	invaders2->setImage(mothershipImage);
 	invaders2->start();
 	
-	// Setup GUI
+	// Setup ofGUI
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
 	gui.add(rate.setup("rate", 4, 1, 10));
@@ -120,6 +140,12 @@ void ofApp::update() {
 
 void ofApp::draw() {
 	if (gameState == "start") {
+		// Start screen
+
+		// Logo and text
+		logo.draw((ofGetWidth() - logo.getWidth()) / 2, (ofGetHeight() - logo.getHeight()) / 2 - 100);
+		title.drawString("SIGMA SKY", (ofGetWidth() - title.stringWidth("SIGMA SKY")) / 2, ofGetHeight() / 2 + 100);
+		subtitle.drawString("Press space", (ofGetWidth() - subtitle.stringWidth("Press space")) / 2, ofGetHeight() / 2 + 148);
 
 		// Stop all emitters
 		turretEmitter->stop();
@@ -134,12 +160,6 @@ void ofApp::draw() {
 		// Reset player position
 		player.x = ofGetWidth() / 2;
 		player.y = ofGetHeight() / 2;
-
-		// Start screen
-		ofSetColor(0xffffff);
-		float textXPosition = (ofGetWidth() - font.stringWidth(startScreenText)) / 2;
-		float textYPosition = (ofGetHeight() - font.stringHeight(startScreenText)) / 2;
-		font.drawString(startScreenText, textXPosition, textYPosition);
 	} else if (gameState == "game") {
 
 		if (once) {
@@ -150,8 +170,17 @@ void ofApp::draw() {
 		}
 
 		// Game screen
-		// Stars for background
-		stars.draw();
+
+		if (ofGetElapsedTimef() > 15) {
+			subtitle.drawString("HARD", 400, 100);
+			invaders2->draw();
+		} else if (ofGetElapsedTimef() > 10) {
+			subtitle.drawString("MEDIUM", 400, 100);
+		} else if (ofGetElapsedTimef() > 5) {
+			subtitle.drawString("EASY", 400, 100);
+		} else {
+			subtitle.drawString("TUTORIAL", 400, 100);
+		}
 
 		// Player
 		player.draw();
@@ -159,18 +188,19 @@ void ofApp::draw() {
 		
 		// Invaders
 		invaders->draw();
-		invaders2->draw();
 		
 		// Stars for background
 		stars.draw();
 		
-		// Draw player score
-		string scoreString = "Score: " + to_string(score);
-		float textXPosition = font.stringWidth(scoreString);
-		float textYPosition = font.stringHeight(scoreString);
-		scoreFont.drawString(scoreString, textXPosition, textYPosition);
+		// GUI Related
+		gui_time_background.draw(36, 48);
+		gui_score_background.draw(36, 138);
+		gui_time_font.drawString(to_string((int)ofGetElapsedTimef()), 184, 112);
+		gui_score_font.drawString(to_string(score), 184, 202);
+		gui_fps_font.drawString("FPS: " + to_string((int)ofGetFrameRate()), 36, 264);
 
-		// GUI 
+
+		// ofGUI 
 		if (showGUI) gui.draw();
 		if (showAimAssist) ofDrawLine(player.x + player.width / 2, player.y + player.height / 2, ofGetMouseX(), ofGetMouseY());
 	
@@ -190,14 +220,13 @@ void ofApp::draw() {
 		player.x = ofGetWidth() / 2;
 		player.y = ofGetHeight() / 2;
 
-		// Reset score
+		// Reset time and score
+		ofResetElapsedTimeCounter();
 		score = 0;
 
-		ofSetColor(0xffffff);
-		float textXPosition = (ofGetWidth() - font.stringWidth("You Lose")) / 2;
-		float textYPosition = (ofGetHeight() - font.stringHeight("You Lose")) / 2;
-		font.drawString("You Lose", textXPosition, textYPosition);
-		font.drawString("Press Space to try again", textXPosition, textYPosition + font.stringHeight("You Lose"));
+		// Text
+		title.drawString("You Lose", (ofGetWidth() - title.stringWidth("You Lose")) / 2, ofGetHeight() / 2);
+		subtitle.drawString("Press space to try again", (ofGetWidth() - subtitle.stringWidth("Press space to try again")) / 2, ofGetHeight() / 2 + 48);
 		once = true;
 	}
 }

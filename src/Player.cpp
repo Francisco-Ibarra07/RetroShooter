@@ -32,11 +32,7 @@ void Player::shoot(int button, bool _isShooting, int shootKey) {
 }
 
 bool Player::collides(ofRectangle hitbox) {
-
-	bool x_range = (x < hitbox.x + hitbox.width) &&
-		(x + width > hitbox.x);
-	bool y_range = (y < hitbox.y + hitbox.height) &&
-		(y + height > hitbox.y);
-
+	bool x_range = (x < hitbox.x + hitbox.width) && (x + width > hitbox.x);
+	bool y_range = (y < hitbox.y + hitbox.height) && (y + height > hitbox.y);
 	return (x_range && y_range) ? true : false;
 }

@@ -189,8 +189,7 @@ void Emitter::draw() {
 
 		if (haveImage) {
 			image.draw(-image.getWidth() / 2.0 + trans.x, -image.getHeight() / 2.0 + trans.y);
-		}
-		else {
+		} else {
 			ofSetColor(0, 0, 200);
 			ofDrawRectangle(-width/2 + trans.x, -height/2 + trans.y, width, height);
 		}
