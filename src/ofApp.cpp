@@ -8,8 +8,6 @@
  * NICE TO HAVE: Change the more things with difficulty
  * NICE TO HAVE: Bullet despawns when outside the viewport
  * BUG: Collition is slight off with player and enemy
- * BUG: Player bullets adds to score without enemies
- * BUG: Sometimes error when bullet collide with enemy
  **/
 
 #include "ofApp.h"
@@ -160,6 +158,8 @@ void ofApp::draw() {
 		// Reset player position
 		player.x = ofGetWidth() / 2;
 		player.y = ofGetHeight() / 2;
+
+		ofResetElapsedTimeCounter();
 	} else if (gameState == "game") {
 
 		if (once) {
@@ -174,10 +174,13 @@ void ofApp::draw() {
 		if (ofGetElapsedTimef() > 15) {
 			subtitle.drawString("HARD", 400, 100);
 			invaders2->draw();
+			invaders2->startSpriteCreation();
 		} else if (ofGetElapsedTimef() > 10) {
 			subtitle.drawString("MEDIUM", 400, 100);
+			invaders2->stopSpriteCreation();
 		} else if (ofGetElapsedTimef() > 5) {
 			subtitle.drawString("EASY", 400, 100);
+			invaders2->stopSpriteCreation();
 		} else {
 			subtitle.drawString("TUTORIAL", 400, 100);
 		}
