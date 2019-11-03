@@ -160,7 +160,6 @@ void ofApp::draw() {
 		player.y = ofGetHeight() / 2;
 
 		ofResetElapsedTimeCounter();
-
 	} else if (gameState == "game") {
 
 		if (once) {
@@ -175,10 +174,13 @@ void ofApp::draw() {
 		if (ofGetElapsedTimef() > 15) {
 			subtitle.drawString("HARD", 400, 100);
 			invaders2->draw();
+			invaders2->startSpriteCreation();
 		} else if (ofGetElapsedTimef() > 10) {
 			subtitle.drawString("MEDIUM", 400, 100);
+			invaders2->stopSpriteCreation();
 		} else if (ofGetElapsedTimef() > 5) {
 			subtitle.drawString("EASY", 400, 100);
+			invaders2->stopSpriteCreation();
 		} else {
 			subtitle.drawString("TUTORIAL", 400, 100);
 		}
