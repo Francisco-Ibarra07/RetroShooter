@@ -247,6 +247,7 @@ void ofApp::checkCollisions() {
 		if (score > oldScore) {
 			oldScore = score;
 			explosionSound.play();
+
 			removeMe.push_back(i);
 		}
 		
