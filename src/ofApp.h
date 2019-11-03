@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "Emitter.h"
 #include "Stars.h"
+#include "ParticleSystem.h"
+#include "ParticleEmitter.h"
 
 class ofApp : public ofBaseApp {
 	public:
@@ -26,6 +28,7 @@ class ofApp : public ofBaseApp {
 	
 		// Player
 		Player player;
+		Particle player_particle;
 
 		// Star background
 		Stars stars;
