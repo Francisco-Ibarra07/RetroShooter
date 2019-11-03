@@ -8,10 +8,19 @@ void Player::setup(float _x, float _y) {
 }
 
 void Player::update() {
-	if (up) y -= speed;
-	if (down) y += speed;
-	if (right) x += speed;
-	if (left) x -= speed;
+
+	if (up)
+		(y - speed < 0) ? y = 0 : y -= speed;
+		
+	if (down)
+		(y + speed < ofGetHeight() - height) ? y += speed : y = ofGetHeight() - height;
+
+	if (right) 
+		(x + speed < ofGetWidth() - width) ? x += speed : x = ofGetWidth() - width;
+		
+	if (left) 
+		(x - speed > 0) ? x -= speed : x = 0;
+
 }
 
 void Player::draw() {
