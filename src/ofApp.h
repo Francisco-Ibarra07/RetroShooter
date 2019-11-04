@@ -24,6 +24,7 @@ class ofApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		void checkCollisions();
+		void particleExplosionAt(int x, int y);
 		bool once = true;
 	
 		// Player
@@ -60,6 +61,7 @@ class ofApp : public ofBaseApp {
 		// Emitter properties
 		Emitter *invaders;
 		Emitter *invaders2;
+
 		ofImage enemyImage;
 		ofImage mothershipImage;
 		bool move1 = true;
@@ -67,10 +69,14 @@ class ofApp : public ofBaseApp {
 
 		// Turret Emitter
 		Emitter *turretEmitter;
+		ParticleEmitter explosionEmitter;
 		bool bulletImageLoaded;
 		ofImage bulletImage;
 		ofSoundPlayer shootSound;
 		ofSoundPlayer explosionSound;
+
+		// Forces
+		ImpulseRadialForce *radialForce;
 
 		// ofxGui
 		bool showGUI;

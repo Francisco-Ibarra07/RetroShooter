@@ -3,6 +3,12 @@
 
 #include "ParticleSystem.h"
 
+void ParticleSystem::setPosition(ofVec3f pos) {
+	if (originIsSet) return;
+
+	origin = pos;
+}
+
 void ParticleSystem::add(const Particle &p) {
 	particles.push_back(p);
 }

@@ -9,6 +9,10 @@ ParticleEmitter::ParticleEmitter() {
 	init();
 }
 
+void ParticleEmitter::setPosition(ofVec3f pos) {
+	position = pos;
+}
+
 ParticleEmitter::ParticleEmitter(ParticleSystem *s) {
 	if (s == NULL)
 	{
@@ -76,6 +80,11 @@ void ParticleEmitter::stop() {
 	started = false;
 	fired = false;
 }
+
+void ParticleEmitter::update() {
+	update(position.x, position.y, position.z);
+}
+
 void ParticleEmitter::update(float x, float y, float z) {
 	position = ofVec3f(x, y, z);
 

@@ -22,9 +22,12 @@ public:
 	void remove(int);
 	void update();
 	void setLifespan(float);
+	void setPosition(ofVec3f);
 	void reset();
 	int removeNear(const ofVec3f & point, float dist);
 	void draw();
+	ofVec3f origin;
+	bool originIsSet = false;
 	vector<Particle> particles;
 	vector<ParticleForce *> forces;
 };

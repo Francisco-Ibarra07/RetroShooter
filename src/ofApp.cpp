@@ -4,10 +4,6 @@
  * Professor: Kevin Smith
  * Class:     CS 134
  *
- * REQUIREMENT: When bullet hit ship, explosion particle
- * NICE TO HAVE: Change the more things with difficulty
- * NICE TO HAVE: Bullet despawns when outside the viewport
- * BUG: Collition is slight off with player and enemy
  **/
 
 #include "ofApp.h"
@@ -81,7 +77,16 @@ void ofApp::setup() {
 	invaders2->setChildSize(20, 20);
 	invaders2->setImage(mothershipImage);
 	invaders2->start();
-	
+
+	// Particle explosion force emitter
+	explosionEmitter.sys->addForce(new ImpulseRadialForce(2000.0));
+	explosionEmitter.setVelocity(ofVec3f(0, 0, 0));
+	explosionEmitter.setOneShot(true);
+	explosionEmitter.setLifespan(2.0);
+	explosionEmitter.setEmitterType(RadialEmitter);
+	explosionEmitter.setParticleRadius(1);
+	explosionEmitter.setGroupSize(500);
+
 	// Setup ofGUI
 	gui.setup();
 	gui.add(showAimAssist.setup("Aim", false));
@@ -93,6 +98,8 @@ void ofApp::setup() {
 
 void ofApp::update() {
 	player.update();
+
+	explosionEmitter.update();
 
 	// Update Turret Emitter variables (space to shoot)
 	player.isShooting ? turretEmitter->startSpriteCreation() : turretEmitter->stopSpriteCreation();
@@ -134,6 +141,13 @@ void ofApp::update() {
 		invaders2->setPosition(ofVec3f(invaders2->trans.x - 10, invaders2->trans.y, 0));
 		if (invaders2->trans.x < 0) move2 = !move2;
 	}
+}
+		
+void ofApp::particleExplosionAt(int x, int y) {
+	explosionEmitter.setPosition(ofVec3f(x, y, 0));
+	explosionEmitter.sys->reset();
+	explosionEmitter.start();
+	explosionEmitter.update();
 }
 
 void ofApp::draw() {
@@ -202,6 +216,8 @@ void ofApp::draw() {
 		// Stars for background
 		stars.draw();
 		
+		explosionEmitter.draw();
+
 		// GUI Related
 		gui_time_background.draw(36, 48);
 		gui_score_background.draw(36, 138);
@@ -253,7 +269,7 @@ void ofApp::checkCollisions() {
 		if (score > oldScore) {
 			oldScore = score;
 			explosionSound.play();
-
+			particleExplosionAt(turretEmitter->sys->sprites[i].trans.x, turretEmitter->sys->sprites[i].trans.y);
 			removeMe.push_back(i);
 		}
 		
@@ -261,6 +277,7 @@ void ofApp::checkCollisions() {
 		if (score > oldScore) {
 			oldScore = score;
 			explosionSound.play();
+			particleExplosionAt(turretEmitter->sys->sprites[i].trans.x, turretEmitter->sys->sprites[i].trans.y);
 			removeMe.push_back(i);
 		}
 	}
@@ -288,7 +305,6 @@ void ofApp::checkCollisions() {
 void ofApp::keyPressed(int key) {
 	if (key == ' ') gameState = "game"; // Start to game screen
 	if (key == 'h') showGUI = !showGUI; // Show/Hide GUI
-
 	// Configure player controls (move: wasd, shoot: spacebar)
 	if (gameState == "game") {
 		player.movement(key, true, { 'w', 'a', 's', 'd' });

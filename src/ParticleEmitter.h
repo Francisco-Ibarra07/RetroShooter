@@ -18,6 +18,7 @@ public:
 	void draw();
 	void start();
 	void stop();
+	void setPosition(ofVec3f);
 	void setLifespan(const float life)   { lifespan = life; }
 	void setVelocity(const ofVec3f &vel) { velocity = vel; }
 	void setRate(const float r) { rate = r; }
@@ -30,12 +31,14 @@ public:
 	void setMass(float m) { mass = m; }
 	void setDamping(float d) { damping = d; }
 	void update(float, float, float);
+	void update();
 	void spawn(float time);
 	ParticleSystem *sys;
 	float rate;         // per sec
 	bool oneShot;
 	bool fired;
 	bool randomLife;
+	ofVec3f origin;
 	ofVec3f lifeMinMax;
 	ofVec3f velocity;
 	float lifespan;     // sec
