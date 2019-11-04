@@ -171,18 +171,25 @@ void ofApp::draw() {
 
 		// Game screen
 
-		if (ofGetElapsedTimef() > 15) {
-			subtitle.drawString("HARD", 400, 100);
+		if (ofGetElapsedTimef() > 30) {
+			subtitle.drawString("INSANE", 400, 100);
 			invaders2->draw();
 			invaders2->startSpriteCreation();
+			invaders->setRate(3.5);
+
+		} else if (ofGetElapsedTimef() > 20) {
+			subtitle.drawString("HARD", 400, 100);
+			invaders2->stopSpriteCreation();
+			invaders->setRate(3.0);
+
 		} else if (ofGetElapsedTimef() > 10) {
 			subtitle.drawString("MEDIUM", 400, 100);
 			invaders2->stopSpriteCreation();
-		} else if (ofGetElapsedTimef() > 5) {
+			invaders->setRate(2.5);
+
+		} else {
 			subtitle.drawString("EASY", 400, 100);
 			invaders2->stopSpriteCreation();
-		} else {
-			subtitle.drawString("TUTORIAL", 400, 100);
 		}
 
 		// Player
@@ -201,7 +208,6 @@ void ofApp::draw() {
 		gui_time_font.drawString(to_string((int)ofGetElapsedTimef()) + "s", 184, 112);
 		gui_score_font.drawString(to_string(score), 184, 202);
 		gui_fps_font.drawString("FPS: " + to_string((int)ofGetFrameRate()), 36, 264);
-
 
 		// ofGUI 
 		if (showGUI) gui.draw();
@@ -235,7 +241,7 @@ void ofApp::draw() {
 }
 
 void ofApp::checkCollisions() {
-	float collisionDist = 25 + invaders->childHeight / 2;
+	float collisionDist = 16 + invaders->childHeight / 2;
 	vector<int> removeMe;
 	int oldScore = 0;
 	ofRectangle invaderHitbox;
