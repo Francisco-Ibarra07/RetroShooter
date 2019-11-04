@@ -148,6 +148,7 @@ void ofApp::particleExplosionAt(int x, int y) {
 	explosionEmitter.sys->reset();
 	explosionEmitter.start();
 	explosionEmitter.update();
+	ofSetColor(ofColor::white);
 }
 
 void ofApp::draw() {
@@ -176,6 +177,7 @@ void ofApp::draw() {
 		ofResetElapsedTimeCounter();
 	} else if (gameState == "game") {
 
+		ofSetColor(ofColor::white);
 		if (once) {
 			turretEmitter->start();
 			invaders->start();
@@ -187,19 +189,22 @@ void ofApp::draw() {
 
 		if (ofGetElapsedTimef() > 30) {
 			subtitle.drawString("INSANE", 400, 100);
+			invaders2->setRate(3.5);
 			invaders2->draw();
-			invaders2->startSpriteCreation();
 			invaders->setRate(3.5);
 
 		} else if (ofGetElapsedTimef() > 20) {
 			subtitle.drawString("HARD", 400, 100);
-			invaders2->stopSpriteCreation();
+			invaders2->setRate(3.0);
+			invaders2->draw();
 			invaders->setRate(3.0);
 
 		} else if (ofGetElapsedTimef() > 10) {
 			subtitle.drawString("MEDIUM", 400, 100);
-			invaders2->stopSpriteCreation();
+			invaders2->startSpriteCreation();
+			invaders2->draw();
 			invaders->setRate(2.5);
+			invaders2->setRate(2.5);
 
 		} else {
 			subtitle.drawString("EASY", 400, 100);
@@ -230,6 +235,9 @@ void ofApp::draw() {
 		if (showAimAssist) ofDrawLine(player.x + player.width / 2, player.y + player.height / 2, ofGetMouseX(), ofGetMouseY());
 	
 	} else if (gameState == "gameover") {
+
+		ofSetColor(ofColor::white);
+
 
 		// Stop all emitters
 		turretEmitter->stop();
