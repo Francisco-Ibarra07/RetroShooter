@@ -15,3 +15,7 @@ bin/*.exp
 bin/*.ilk
 bin/*.lib
 bin/*.pdb
+
+# Temp ignore (Will be removed at the end of semester maybe?)
+bin/
+src/
